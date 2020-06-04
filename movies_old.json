@@ -1,0 +1,325 @@
+{
+  "movies": [
+    {
+      "criticsCount": 276,
+      "finalScore": 7.8632355,
+      "year": 2003,
+      "director": "Gore Verbinski",
+      "publicScore": 8.150001,
+      "title": "Pirates of the Caribbean The Curse Of The Black Pearl",
+      "detailCriticsCounts": [
+        {
+          "RT": 219
+        },
+        {
+          "MC": 40
+        },
+        {
+          "FA": 17
+        }
+      ],
+      "roi": 367.33142,
+      "detailCriticsScores": [
+        {
+          "RT": 7.9
+        },
+        {
+          "MC": 6.3
+        },
+        {
+          "FA": 8.529411
+        }
+      ],
+      "detailPublicCounts": [
+        {
+          "IMDb": 994371
+        },
+        {
+          "RT": 33125722
+        },
+        {
+          "MC": 971
+        },
+        {
+          "FA": 151312
+        }
+      ],
+      "publicCount": 34272376,
+      "detailPublicScores": [
+        {
+          "IMDb": 8.0
+        },
+        {
+          "RT": 8.6
+        },
+        {
+          "MC": 8.8
+        },
+        {
+          "FA": 7.2
+        }
+      ],
+      "boxOffice": 654264015,
+      "criticsScore": 7.576471,
+      "fetched": true,
+      "budget": 140000000
+    },
+    {
+      "criticsCount": 282,
+      "finalScore": 6.0634804,
+      "year": 2006,
+      "director": "Gore Verbinski",
+      "publicScore": 7.025,
+      "title": "Pirates of the Caribbean Dead Man\u0027s Chest",
+      "detailCriticsCounts": [
+        {
+          "RT": 228
+        },
+        {
+          "MC": 37
+        },
+        {
+          "FA": 17
+        }
+      ],
+      "roi": 373.85764,
+      "detailCriticsScores": [
+        {
+          "RT": 5.3
+        },
+        {
+          "MC": 5.3
+        },
+        {
+          "FA": 4.7058825
+        }
+      ],
+      "detailPublicCounts": [
+        {
+          "IMDb": 638602
+        },
+        {
+          "RT": 1847651
+        },
+        {
+          "MC": 929
+        },
+        {
+          "FA": 97177
+        }
+      ],
+      "publicCount": 2584359,
+      "detailPublicScores": [
+        {
+          "IMDb": 7.3
+        },
+        {
+          "RT": 7.2
+        },
+        {
+          "MC": 7.2
+        },
+        {
+          "FA": 6.4
+        }
+      ],
+      "boxOffice": 1066179725,
+      "criticsScore": 5.101961,
+      "fetched": true,
+      "budget": 225000000
+    },
+    {
+      "criticsCount": 279,
+      "finalScore": 5.841666,
+      "year": 2007,
+      "director": "Gore Verbinski",
+      "publicScore": 6.6749997,
+      "title": "Pirates of the Caribbean At World\u0027s End",
+      "detailCriticsCounts": [
+        {
+          "RT": 227
+        },
+        {
+          "MC": 36
+        },
+        {
+          "FA": 16
+        }
+      ],
+      "roi": 220.33215,
+      "detailCriticsScores": [
+        {
+          "RT": 4.4
+        },
+        {
+          "MC": 5.0
+        },
+        {
+          "FA": 5.625
+        }
+      ],
+      "detailPublicCounts": [
+        {
+          "IMDb": 580033
+        },
+        {
+          "RT": 2738491
+        },
+        {
+          "MC": 991
+        },
+        {
+          "FA": 85812
+        }
+      ],
+      "publicCount": 3405327,
+      "detailPublicScores": [
+        {
+          "IMDb": 7.1
+        },
+        {
+          "RT": 7.2
+        },
+        {
+          "MC": 6.3
+        },
+        {
+          "FA": 6.1
+        }
+      ],
+      "boxOffice": 960996492,
+      "criticsScore": 5.008333,
+      "fetched": true,
+      "budget": 300000000
+    },
+    {
+      "criticsCount": 337,
+      "finalScore": 5.133712,
+      "year": 2011,
+      "director": "Rob Marshall",
+      "publicScore": 5.9249997,
+      "title": "Pirates of the Caribbean On Stranger Tides",
+      "detailCriticsCounts": [
+        {
+          "RT": 276
+        },
+        {
+          "MC": 39
+        },
+        {
+          "FA": 22
+        }
+      ],
+      "roi": 318.2855,
+      "detailCriticsScores": [
+        {
+          "RT": 3.3
+        },
+        {
+          "MC": 4.5
+        },
+        {
+          "FA": 5.2272725
+        }
+      ],
+      "detailPublicCounts": [
+        {
+          "IMDb": 467976
+        },
+        {
+          "RT": 199638
+        },
+        {
+          "MC": 757
+        },
+        {
+          "FA": 53123
+        }
+      ],
+      "publicCount": 721494,
+      "detailPublicScores": [
+        {
+          "IMDb": 6.6
+        },
+        {
+          "RT": 5.4
+        },
+        {
+          "MC": 6.3
+        },
+        {
+          "FA": 5.4
+        }
+      ],
+      "boxOffice": 1045713802,
+      "criticsScore": 4.3424244,
+      "fetched": true,
+      "budget": 250000000
+    },
+    {
+      "criticsCount": 362,
+      "finalScore": 5.057843,
+      "year": 2017,
+      "director": "Joachim Rønning, Espen Sandberg",
+      "publicScore": 6.1,
+      "title": "Pirates of the Caribbean Dead Men Tell No Tales",
+      "detailCriticsCounts": [
+        {
+          "RT": 283
+        },
+        {
+          "MC": 45
+        },
+        {
+          "FA": 34
+        }
+      ],
+      "roi": 245.59209,
+      "detailCriticsScores": [
+        {
+          "RT": 3.0
+        },
+        {
+          "MC": 3.9
+        },
+        {
+          "FA": 5.147059
+        }
+      ],
+      "detailPublicCounts": [
+        {
+          "IMDb": 249730
+        },
+        {
+          "RT": 130650
+        },
+        {
+          "MC": 800
+        },
+        {
+          "FA": 18573
+        }
+      ],
+      "publicCount": 399753,
+      "detailPublicScores": [
+        {
+          "IMDb": 6.6
+        },
+        {
+          "RT": 6.1
+        },
+        {
+          "MC": 6.3
+        },
+        {
+          "FA": 5.4
+        }
+      ],
+      "boxOffice": 794861794,
+      "criticsScore": 4.0156865,
+      "fetched": true,
+      "budget": 230000000
+    }
+  ]
+}
+
