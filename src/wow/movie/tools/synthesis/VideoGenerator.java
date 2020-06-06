@@ -45,7 +45,7 @@ public class VideoGenerator {
 	/** Instante de inicio de la Secuencia de titulo (box y texto) */
 	protected static int titleAppearSec = 2;
 	/** Instante de inicio de la Secuencia de la información (box y texto) */
-	protected static int infoAppearSec = 6;
+	protected static int infoAppearSec = 3;
 	/** Tiempo mostrar nueva info */
 	protected static int infoIncrementSec = 2;
 	/** Tiempo a ocultar el texto/caja antes de que termine el video */
@@ -120,8 +120,8 @@ public class VideoGenerator {
 				scriptContent.append("drawtext=enable='between(t," + (titleAppearSec-1+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + titleFont + ":text=" + getDirector(movie) + ":fontcolor=white:fontsize=45:x=max((w-(t-2.5-"+trimStartSec+")*w/1.2)\\,40):y=1010:shadowcolor=black:shadowx=2:shadowy=2, ");
 				
 				// Box gris de la info
-				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=110:w=(iw-200):h=(ih-450):color=black@0.4:t=max, "); 
-				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=110:w=(iw-200):h=(ih-450):color=white@0.4:thickness=5, "); 
+				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=black@0.75:t=max, "); 
+				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=white@0.75:thickness=5, "); 
 				curInfoAppear+=infoIncrementSec;
 				
 				// Public Score
@@ -130,12 +130,12 @@ public class VideoGenerator {
 				curInfoAppear+=infoIncrementSec;
 				
 				// Critics Score
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Critics\\: " + getCriticsScore(movie) + "':fontcolor=white:fontsize=100:x=150:y=350:shadowcolor=black:shadowx=2:shadowy=2, ");
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='" + getCriticsCount(movie) + "':fontcolor=white:fontsize=40:x=150:y=450:shadowcolor=black:shadowx=2:shadowy=2, ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Critics\\: " + getCriticsScore(movie) + "':fontcolor=white:fontsize=100:x=150:y=425:shadowcolor=black:shadowx=2:shadowy=2, ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='" + getCriticsCount(movie) + "':fontcolor=white:fontsize=40:x=150:y=525:shadowcolor=black:shadowx=2:shadowy=2, ");
 				curInfoAppear+=infoIncrementSec;
 				
 				// Final Score
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Final\\: " + getFinalScore(movie) + "':fontcolor=white:fontsize=150:x=150:y=550:shadowcolor=black:shadowx=2:shadowy=2:box=1:boxborderw=12:boxcolor="+scoreColor+"@0.6, ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Final\\: " + getFinalScore(movie) + "':fontcolor=white:fontsize=150:x=150:y=700:shadowcolor=black:shadowx=2:shadowy=2:box=1:boxborderw=12:boxcolor="+scoreColor+"@0.6, ");
 				//	scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Public vs Critics difference\\: " + getPvC(movie) + "':fontcolor=white:fontsize=40:x=150:y=650:shadowcolor=black:shadowx=2:shadowy=2, ");
 				curInfoAppear+=infoIncrementSec;
 				
@@ -145,12 +145,12 @@ public class VideoGenerator {
 				curInfoAppear+=infoIncrementSec;
 				
 				// BoxOffice
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Gross\\: " + getBoxOffice(movie) + "':fontcolor=white:fontsize=100:x=1770-tw:y=350:shadowcolor=black:shadowx=2:shadowy=2, ");
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='2020\\: " + getMoney2020(movie, "boxOffice") + "':fontcolor=white:fontsize=40:x=1770-tw:y=450:shadowcolor=black:shadowx=2:shadowy=2, ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='Gross\\: " + getBoxOffice(movie) + "':fontcolor=white:fontsize=100:x=1770-tw:y=425:shadowcolor=black:shadowx=2:shadowy=2, ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='2020\\: " + getMoney2020(movie, "boxOffice") + "':fontcolor=white:fontsize=40:x=1770-tw:y=525:shadowcolor=black:shadowx=2:shadowy=2, ");
 				curInfoAppear+=infoIncrementSec;
 				
 				// ROI
-				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='R.O.I.\\: " + getROI(movie) + "':fontcolor=white:fontsize=150:x=1770-tw:y=550:shadowcolor=black:shadowx=2:shadowy=2:box=1:boxborderw=12:boxcolor="+roiColor+"@0.6 ");
+				scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='R.O.I.\\: " + getROI(movie) + "':fontcolor=white:fontsize=150:x=1770-tw:y=700:shadowcolor=black:shadowx=2:shadowy=2:box=1:boxborderw=12:boxcolor="+roiColor+"@0.6 ");
 				//	scriptContent.append("drawtext=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + infoFont + ":text='(Gross revenue)':fontcolor=white:fontsize=40:x=1770-tw:y=650:shadowcolor=black:shadowx=2:shadowy=2 ");
 				
 				// Fin
@@ -329,12 +329,14 @@ public class VideoGenerator {
 		return sanitize((String)movie.get("director"));
 	}
 	
+	/** Se utiliza el weighted score en lugar de average */
 	public static String getPublicScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("publicScore")), 2, 1L);
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("publicScoreW")), 2, 1L);
 	}
 	
+	/** Se utiliza el weighted score en lugar de average */
 	public static String getCriticsScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("criticsScore")), 2, 1L); 
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("criticsScoreW")), 2, 1L); 
 	}
 	
 	public static String getPublicCount(Map movie) {
@@ -357,8 +359,9 @@ public class VideoGenerator {
 		return sanitize(thousandSeparator(bigDecimalFormat(new BigDecimal((Long)movie.get("criticsCount")), 0, 1L)) + " reviews");
 	}
 	
+	/** Se utiliza el weighted score en lugar de average */
 	public static String getFinalScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("finalScore")), 2, 1L);
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("finalScoreW")), 2, 1L);
 	}
 	
 	public static String getBudget(Map movie) {

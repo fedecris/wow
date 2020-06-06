@@ -229,7 +229,7 @@ public class WordFFMpegScriptGenerator {
 	protected static String[] defineStartEnd(String intervalLine) {
 		// 02:08:16,840 --> 02:08:18,470
 		String desde = intervalLine.split(" ")[0];
-		String hasta = intervalLine.split(" ")[2];
+		String hasta = intervalLine.split(" ")[2];	
 		// Armo un timestamp para luego restarle lo necesario. Ademas le restamos los segundos y el extra por desfasaje 
 		Timestamp start = Timestamp.valueOf("2020-01-01 " + desde); 
 		Long xtra = start.getTime() - secondsBack * 1000 - extraStartMS;

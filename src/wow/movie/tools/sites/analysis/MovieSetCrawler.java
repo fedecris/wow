@@ -3,6 +3,7 @@ package wow.movie.tools.sites.analysis;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public class MovieSetCrawler {
 				
 				// Calcular totales por pelicula PUBLICO
 				int publicSites = 0, criticSites = 0;
-				float publicScore = 0f, criticsScore = 0f;
+				double publicScore = 0f, criticsScore = 0f;
 				long publicCount = 0, criticsCount = 0;
 				JSONArray arrScore = new JSONArray();
 				JSONArray arrCount = new JSONArray();
@@ -128,13 +129,19 @@ public class MovieSetCrawler {
 				// Calculos finales
 				publicScore = publicScore / publicSites;
 				criticsScore = criticsScore / criticSites;
-				float roi = ((crawler.boxOfficeParser.getBoxOffice()/1000000f - crawler.boxOfficeParser.getBudget()/1000000f) / (crawler.boxOfficeParser.getBudget()/1000000f)) * 100;
-				float finalScore = (1f * publicScore + 1f * criticsScore) / 2;
+				double roi = ((crawler.boxOfficeParser.getBoxOffice()/1000000f - crawler.boxOfficeParser.getBudget()/1000000f) / (crawler.boxOfficeParser.getBudget()/1000000f)) * 100;
+				double finalScore = (1d * publicScore + 1d * criticsScore) / 2;
+				double publicScoreW = getWeightedScore(movie, publicCount, "Public");
+				double criticsScoreW = getWeightedScore(movie, criticsCount, "Critics");
+				double finalScoreW = (1d * publicScoreW + 1d * criticsScoreW) / 2;
 				System.out.println("");
 				System.out.println(crawler.movie + " (" + crawler.year + ") ");
 				System.out.println(  "Public:    " + publicScore  + ", " + publicCount  + " votes" );
+				System.out.println(  "Public(W) :" + publicScoreW);
 				System.out.println(  "Critics:   " + criticsScore + ", " + criticsCount + " reviews" );
+				System.out.println(  "Critics(W):" + criticsScoreW);
 				System.out.println(  "Final:     " + finalScore );
+				System.out.println(  "Final(W):  " + finalScoreW);
 				System.out.println(  "Budget:    " + crawler.boxOfficeParser.getBudget() );
 				System.out.println(  "BoxOffice: " + crawler.boxOfficeParser.getBoxOffice() );
 				System.out.println(  "R.O.I.:    " + roi);
@@ -149,7 +156,11 @@ public class MovieSetCrawler {
 				movie.put("finalScore", finalScore);
 				movie.put("budget", crawler.boxOfficeParser.getBudget());
 				movie.put("boxOffice", crawler.boxOfficeParser.getBoxOffice());
-				movie.put("roi", roi);	
+				movie.put("roi", roi);
+				movie.put("publicScoreW", publicScoreW);
+				movie.put("criticsScoreW", criticsScoreW);
+				movie.put("finalScoreW", finalScoreW);
+				
 			}
 			
 			// Totales de todo el movieSet
@@ -181,6 +192,32 @@ public class MovieSetCrawler {
 		return path + File.separator + file;
 	}
 
+	/** Calcula el puntaje ponderado por votos, sin sobrepasar un límite maximo de votos */
+	protected static Double getWeightedScore(Map movie, long totalVotes, String type) {
+		// Maximo de votos atribuibles a un sitio  
+		long maxVotes = totalVotes / ((JSONArray)movie.get("detail" + type + "Scores")).size();
+
+		// Iterar y calcular el ponderado, sin sobrepasar el limite maximo (considerando el numero de sitios
+		double totalScore = 0d;
+		long totalCount = 0;
+		JSONArray scores = ((JSONArray)movie.get("detail" + type + "Scores"));
+		JSONArray counts = ((JSONArray)movie.get("detail" + type + "Counts"));
+		for (int i=0; i < scores.size(); i++) {
+			// Votos
+			Map score = (Map)scores.get(i);
+			Map vote = (Map)counts.get(i);
+			Double scoreSite = null;
+			try {
+				scoreSite = (Double)(score.get(score.keySet().toArray()[0])); 
+			} catch (Exception e) { 
+				scoreSite = new Double((Float)score.get(score.keySet().toArray()[0]));
+			};
+			Long countSite = (Long)vote.get(vote.keySet().toArray()[0]);
+			totalScore = totalScore + scoreSite * ( Math.min(countSite, maxVotes) );
+			totalCount = totalCount + ( Math.min(countSite, maxVotes) );
+		}
+		return totalScore / totalCount; 
+	}
 	
 	
 }
