@@ -14,7 +14,8 @@ public class SitesManager {
 	public static final String SITE_RT 		= "rottentomatoes.com";
 	public static final String SITE_MC 		= "metacritic.com";
 	public static final String SITE_FA 		= "filmaffinity.com";
-	public static final String SITE_BOM		= "www.boxofficemojo.com";
+	public static final String SITE_BOM		= "boxofficemojo.com";
+	public static final String SITE_WIKI	= "en.wikipedia.org";
 
 	/** Site -> URL con la info */
 	public HashMap<String, String> links = new HashMap<String, String>(); 
@@ -26,8 +27,9 @@ public class SitesManager {
 	protected static final String[] CRITERIA_MC 		= new String[] { "http", "metacritic.com/", 			"/movie/" };
 	protected static final String[] CRITERIA_FA 		= new String[] { "http", "filmaffinity.com/", 			"/film" };
 	protected static final String[] CRITERIA_BOM		= new String[] { "http", "boxofficemojo.com/", 			"/release/" };
+	protected static final String[] CRITERIA_WIKI		= new String[] { "http", "en.wikipedia.org/", 				"/wiki/" };
 	
-	protected static String[] sites = new String[] {SITE_IMDB, SITE_RT, SITE_MC, SITE_FA, SITE_BOM };
+	protected static String[] sites = new String[] {SITE_IMDB, SITE_RT, SITE_MC, SITE_FA, SITE_BOM, SITE_WIKI };
 		
 	static HashMap<String, String[]> siteCriteria = new HashMap<String, String[]>();
 	
@@ -37,6 +39,7 @@ public class SitesManager {
 		siteCriteria.put(SITE_MC, 	CRITERIA_MC);
 		siteCriteria.put(SITE_FA, 	CRITERIA_FA);
 		siteCriteria.put(SITE_BOM, 	CRITERIA_BOM);
+		siteCriteria.put(SITE_WIKI,	CRITERIA_WIKI);
 	}
 	
 	/** BaseURL */

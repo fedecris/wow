@@ -58,6 +58,14 @@ public abstract class WebParser {
 		return name;
 	}
 	
+	public void setBudget(long budget) {
+		this.budget = budget;
+	}
+
+	public void setBoxOffice(long boxOffice) {
+		this.boxOffice = boxOffice;
+	}	
+	
 	/** Procesado a realizar ad-hoc segun parser */
 	protected abstract void load() throws Exception;
 	
@@ -69,6 +77,8 @@ public abstract class WebParser {
 			e.printStackTrace();
 		}
 	}
+
+
 		
 
 }

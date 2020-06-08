@@ -329,14 +329,12 @@ public class VideoGenerator {
 		return sanitize((String)movie.get("director"));
 	}
 	
-	/** Se utiliza el weighted score en lugar de average */
 	public static String getPublicScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("publicScoreW")), 2, 1L);
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("publicScore")), 2, 1L);
 	}
 	
-	/** Se utiliza el weighted score en lugar de average */
 	public static String getCriticsScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("criticsScoreW")), 2, 1L); 
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("criticsScore")), 2, 1L); 
 	}
 	
 	public static String getPublicCount(Map movie) {
@@ -359,9 +357,8 @@ public class VideoGenerator {
 		return sanitize(thousandSeparator(bigDecimalFormat(new BigDecimal((Long)movie.get("criticsCount")), 0, 1L)) + " reviews");
 	}
 	
-	/** Se utiliza el weighted score en lugar de average */
 	public static String getFinalScore(Map movie) {
-		return bigDecimalFormat(new BigDecimal((Double)movie.get("finalScoreW")), 2, 1L);
+		return bigDecimalFormat(new BigDecimal((Double)movie.get("finalScore")), 2, 1L);
 	}
 	
 	public static String getBudget(Map movie) {

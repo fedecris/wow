@@ -11,6 +11,7 @@ import wow.movie.tools.sites.analysis.parser.IMDBParser;
 import wow.movie.tools.sites.analysis.parser.MCParser;
 import wow.movie.tools.sites.analysis.parser.PublicParser;
 import wow.movie.tools.sites.analysis.parser.RTParser;
+import wow.movie.tools.sites.analysis.parser.WikiParser;
 
 public class MovieCrawler {
 	
@@ -63,6 +64,18 @@ public class MovieCrawler {
 		bom.execute();
 		boxOfficeParser = bom;
 		log("%s\t%s\t%s", "BOM:", ""+bom.getBudget(), ""+bom.getBoxOffice());
+			
+		// Asiste a BOM dado que en ocasiones no tiene el budget
+		WikiParser wiki = new WikiParser(cs.links.get(SitesManager.SITE_WIKI));
+		wiki.execute();
+		log("%s\t%s\t%s", "WIKI:", ""+wiki.getBudget(), ""+wiki.getBoxOffice());
+		if (bom.getBudget()==-1 && wiki.getBudget()>-1) {
+			bom.setBudget(wiki.getBudget());
+		}
+		if (bom.getBoxOffice()==-1 && wiki.getBoxOffice()>-1) {
+			bom.setBoxOffice(wiki.getBoxOffice());
+		}
+		
 	}
 	
 	
