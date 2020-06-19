@@ -28,13 +28,14 @@ public class MovieCrawler {
 		this.year = year;
 	}
 	
-	public void fetch() {
+	/** Segundos entre busqueda y busqueda en Google */
+	public void fetch(int delaySecs) {
 		
 		log("%s", "");
 		log("%s", "Feching info for " + movie);
 		
 		SitesManager cs = new SitesManager();
-		cs.getLinksForMovie(movie + " " + year);
+		cs.getLinksForMovie(movie + " " + year, delaySecs);
 		
 		IMDBParser imdb = new IMDBParser(cs.links.get(SitesManager.SITE_IMDB));
 		imdb.execute();

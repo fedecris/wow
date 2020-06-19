@@ -25,12 +25,12 @@ import wow.movie.tools.sites.analysis.parser.PublicParser;
  * { 
  * 	"movies":[
  * 				{
- * 					"search":"The Matrix"
+ * 					"search":"The Matrix 1999"
  * 					"title":"The Matrix",
  * 					"year":1999
  * 				},
  *   			{
- *   				"search":"Pirates of the Caribbean The Curse Of The Black Pearl",
+ *   				"search":"Pirates of the Caribbean The Curse Of The Black Pearl 2003",
  * 					"title":"The Curse Of The Black Pearl",
  * 					"year":2003
  * 				}
@@ -39,10 +39,16 @@ import wow.movie.tools.sites.analysis.parser.PublicParser;
  */
 public class WowMovieSetCrawler {
 
+	/** Espera entre cada busqueda de google */
+	protected static final int MIN_GS_WAIT_SECS = 10;
+	/** Espera adicional random */
+	protected static final int RND_GS_WAIT_SECS = 10;
+	/** Espera entre cada pelicula */
+	protected static final int MOVIE_WAIT_SECS = 60;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args) {
-	
+		
 		if (args.length<2) {
 			System.out.println("Te falta el path y nombre del archivo .json pah");
 			System.exit(1);
@@ -72,7 +78,7 @@ public class WowMovieSetCrawler {
 				
 				// Crear el crawler y recuperar la info
 				MovieCrawler crawler = new MovieCrawler(search, year);			
-				crawler.fetch();
+				crawler.fetch(new Double(MIN_GS_WAIT_SECS + RND_GS_WAIT_SECS * Math.random()).intValue());
 				
 				// Director/es
 				String director = crawler.directorParser.getDirector();
@@ -136,6 +142,7 @@ public class WowMovieSetCrawler {
 				double finalScoreW = (1d * publicScoreW + 1d * criticsScoreW) / 2;
 				System.out.println("");
 				System.out.println(crawler.movie + " (" + crawler.year + ") ");
+				System.out.println(crawler.directorParser.getDirector());
 				System.out.println(  "Public:    " + publicScore  + ", " + publicCount  + " votes" );
 				System.out.println(  "Public(W) :" + publicScoreW);
 				System.out.println(  "Critics:   " + criticsScore + ", " + criticsCount + " reviews" );
@@ -145,6 +152,8 @@ public class WowMovieSetCrawler {
 				System.out.println(  "Budget:    " + crawler.boxOfficeParser.getBudget() );
 				System.out.println(  "BoxOffice: " + crawler.boxOfficeParser.getBoxOffice() );
 				System.out.println(  "R.O.I.:    " + roi);
+				System.out.println();
+				
 				
 				// Guardarlo en la estructura
 				movie.put("fetched", true);
@@ -160,6 +169,15 @@ public class WowMovieSetCrawler {
 				movie.put("publicScoreW", publicScoreW);
 				movie.put("criticsScoreW", criticsScoreW);
 				movie.put("finalScoreW", finalScoreW);
+				
+				// Descansar un ratito para evitar google sorry 
+				System.out.print("Crawling en ");
+				for (int w=MOVIE_WAIT_SECS; w>=0; w--) {
+					System.out.print(w + " ");
+					Thread.sleep(1000);
+				}
+				System.out.println(  "\n--------------------------------------------------------------------------------------------------------\n");
+				
 				
 			}
 			

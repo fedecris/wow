@@ -1,7 +1,9 @@
 package wow.movie.tools.sites.analysis;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,12 +47,14 @@ public class SitesManager {
 	/** BaseURL */
 	protected String googleQuery = "https://www.google.com/search?q=";
 	
-	public void getLinksForMovie(String movie) {
+	/** Segundos entre busqueda y busqueda en Google */
+	public void getLinksForMovie(String movie, int delaySecs) {
 		
 		try {
-
 			// Parsear cada sitio
-			for (String site : sites) {
+			ArrayList<String> randomOrderedSites = randomizeSites();
+			for (String site : randomOrderedSites) {
+				
 				String query = URLEncoder.encode(movie + " site:" + site, "UTF-8");
 				
 				// Conectando a google
@@ -84,10 +88,41 @@ public class SitesManager {
 				if (matches<siteCriteria.get(site).length) {
 					System.out.println(" No encontré el enlace para " + site + "! BUUHUHU!");
 				}
+				
+				Thread.sleep(delaySecs * 1000);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/** Requerir los sitios en orden aleatorio para evitar patrones de busqueda */
+	protected ArrayList<String> randomizeSites() {
+		// Arreglo de sitios con orden random
+		ArrayList<String> randomSites = new ArrayList<String>();
+		
+		// Incorporar al set
+		int siteCount = sites.length;
+		HashSet<String> remainingSites = new HashSet<String>();
+		for (int i=0; i<siteCount; i++) {
+			remainingSites.add(sites[i]);
+		}
+		// Ir agregando de a uno, hasta que solo quede uno en el set
+		System.out.print("(");
+		while (remainingSites.size()>1) {
+			int next = new Double(Math.random() * siteCount).intValue();
+			if (remainingSites.contains(sites[next])) {
+				System.out.print(sites[next] + " ");
+				remainingSites.remove(sites[next]);
+				randomSites.add(sites[next]);
+			}
+		}
+		// Agregar el ultimo que queda
+		System.out.println((String)remainingSites.toArray()[0] + ")");
+		randomSites.add((String)remainingSites.toArray()[0]);
+		
+		return randomSites;
 	}
 	
 }
