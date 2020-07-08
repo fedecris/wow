@@ -39,7 +39,7 @@ public class WowMovieSetVideoGenerator {
 	public static String scriptFileName = "";
 
 	/** Duracion de cada clip. DEBE SER MENOR O IGUAL A 59 Segundos */
-	protected static int clipDurationSec = 30;		// La duracion final sera de unos 30. Agrego unos segs para poder recortar partes si es necesario
+	protected static int clipDurationSec = 50;		// La duracion final sera de unos 30. Agrego unos segs para poder recortar partes si es necesario
 	/** Recortar el inicio del video original cierta cantidad de segundos */
 	protected static int trimStartSec = 20;
 	/** Instante de inicio de la Secuencia de titulo (box y texto) */
@@ -120,8 +120,8 @@ public class WowMovieSetVideoGenerator {
 				scriptContent.append("drawtext=enable='between(t," + (titleAppearSec-1+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':fontfile=" + titleFont + ":text=" + getDirector(movie) + ":fontcolor=white:fontsize=45:x=max((w-(t-2.5-"+trimStartSec+")*w/1.2)\\,40):y=1010:shadowcolor=black:shadowx=2:shadowy=2, ");
 				
 				// Box gris de la info
-				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=black@0.70:t=max, "); 
-				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=white@0.70:thickness=5, "); 
+				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=black@0.65:t=max, "); 
+				scriptContent.append("drawbox=enable='between(t," + (curInfoAppear+trimStartSec) + "," + (trimStartSec+clipDurationSec-hideBeforeEndSec) + ")':x=100:y=100:w=(iw-200):h=(ih-300):color=white@0.65:thickness=5, "); 
 				curInfoAppear+=infoIncrementSec;
 				
 				// Public Score
@@ -417,7 +417,7 @@ public class WowMovieSetVideoGenerator {
 	
 	/** Reemplazos y mas reemplazos */
 	public static String sanitize(String text) {
-		return text.replace(",", "\\,").replace(":", "\\:").replace("\'", "\\\\\\\\\\\'").replace("$", "\\$").replace("%", "\\\\\\%");
+		return text.replace(",", "\\,").replace(":", "\\\\\\\\:").replace("\'", "\\\\\\\\\\\'").replace("$", "\\$").replace("%", "\\\\\\%");
 	}
 	
 	

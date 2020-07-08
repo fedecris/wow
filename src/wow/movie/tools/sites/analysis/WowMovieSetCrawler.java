@@ -44,7 +44,7 @@ public class WowMovieSetCrawler {
 	/** Espera adicional random */
 	protected static final int RND_GS_WAIT_SECS = 5;
 	/** Espera entre cada pelicula */
-	protected static final int MOVIE_WAIT_SECS = 10;
+	protected static final int MOVIE_WAIT_SECS = 5;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args) {
