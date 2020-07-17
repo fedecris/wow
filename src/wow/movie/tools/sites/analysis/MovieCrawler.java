@@ -12,6 +12,7 @@ import wow.movie.tools.sites.analysis.parser.MCParser;
 import wow.movie.tools.sites.analysis.parser.PublicParser;
 import wow.movie.tools.sites.analysis.parser.RTParser;
 import wow.movie.tools.sites.analysis.parser.WikiParser;
+import wow.movie.tools.sites.utils.Log;
 
 public class MovieCrawler {
 	
@@ -23,9 +24,12 @@ public class MovieCrawler {
 	public String movie = null;
 	public Integer year = null;
 	
-	public MovieCrawler(String movie, int year) {
+	protected static StringBuffer logContainer = null;
+	
+	public MovieCrawler(String movie, int year, StringBuffer logContainer) {
 		this.movie = movie;
 		this.year = year;
+		this.logContainer = logContainer;
 	}
 	
 	/** Segundos entre busqueda y busqueda en Google */
@@ -70,19 +74,14 @@ public class MovieCrawler {
 		WikiParser wiki = new WikiParser(cs.links.get(SitesManager.SITE_WIKI));
 		wiki.execute();
 		log("%s\t%s\t%s", "WIKI:", ""+wiki.getBudget(), ""+wiki.getBoxOffice());
-		if (bom.getBudget()==-1 && wiki.getBudget()>-1) {
-			bom.setBudget(wiki.getBudget());
-		}
-		if (bom.getBoxOffice()==-1 && wiki.getBoxOffice()>-1) {
-			bom.setBoxOffice(wiki.getBoxOffice());
-		}
-		
+		bom.setBudget(Math.max(bom.getBudget(), wiki.getBudget()));
+		bom.setBoxOffice(Math.max(bom.getBoxOffice(), wiki.getBoxOffice()));	
 	}
 	
 	
 	
     protected static void log(String msg, String... vals) {
-        System.out.println(String.format(msg, vals));
+        Log.log(logContainer, String.format(msg, vals) + "\n");
     }
 	
 }

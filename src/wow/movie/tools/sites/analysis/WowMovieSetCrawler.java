@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 
 import wow.movie.tools.sites.analysis.parser.CriticsParser;
 import wow.movie.tools.sites.analysis.parser.PublicParser;
+import wow.movie.tools.sites.utils.Log;
 
 /**
  * Recibe un json con los nombres de peliculas (title) el año de cada una (year) y el criterio de busqueda para Google Search
@@ -49,6 +50,8 @@ public class WowMovieSetCrawler {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args) {
 		
+		StringBuffer salida = new StringBuffer();
+		
 		if (args.length<2) {
 			System.out.println("Te falta el path y nombre del archivo .json pah");
 			System.exit(1);
@@ -61,8 +64,6 @@ public class WowMovieSetCrawler {
 			// Parsear entrada
 			JSONObject jo = (JSONObject)new JSONParser().parse(new FileReader(url(path, file)));			
 			JSONArray ja = (JSONArray) jo.get("movies");
-			long totalVotes = 0, totalReviews = 0;
-			long totalBudget = 0, totalBoxOffice = 0;
 			for (int i=0; i<ja.size(); i++){
 				
 				// Ya fue buscada la informacion?
@@ -72,12 +73,12 @@ public class WowMovieSetCrawler {
 				int year = ((Long)movie.get("year")).intValue();
 				boolean fetched = (movie.get("fetched") !=null && (Boolean)movie.get("fetched"));
 				if (fetched) {
-					System.out.println("Omitiendo " + title + " (" + year + ")");
+					Log.log(salida, "Omitiendo " + title + " (" + year + ")\n");
 					continue;
 				}
 				
 				// Crear el crawler y recuperar la info
-				MovieCrawler crawler = new MovieCrawler(search, year);			
+				MovieCrawler crawler = new MovieCrawler(search, year, salida);			
 				crawler.fetch(new Double(MIN_GS_WAIT_SECS + RND_GS_WAIT_SECS * Math.random()).intValue());
 				
 				// Director/es
@@ -103,7 +104,6 @@ public class WowMovieSetCrawler {
 						arrCount.add(mapCount);
 					}
 				}
-				totalVotes = totalVotes + publicCount;
 				movie.put("detailPublicScores", arrScore);
 				movie.put("detailPublicCounts", arrCount);
 				
@@ -124,14 +124,9 @@ public class WowMovieSetCrawler {
 						arrCountC.add(mapCountC);
 					}
 				}	
-				totalReviews = totalReviews + criticsCount;
 				movie.put("detailCriticsScores", arrScoreC);
 				movie.put("detailCriticsCounts", arrCountC);
-				
-				// Totales $
-				totalBudget = totalBudget + crawler.boxOfficeParser.getBudget();
-				totalBoxOffice = totalBoxOffice + crawler.boxOfficeParser.getBoxOffice();
-				
+						
 				// Calculos finales
 				publicScore = publicScore / publicSites;
 				criticsScore = criticsScore / criticSites;
@@ -140,20 +135,19 @@ public class WowMovieSetCrawler {
 				double publicScoreW = getWeightedScore(movie, publicCount, "Public");
 				double criticsScoreW = getWeightedScore(movie, criticsCount, "Critics");
 				double finalScoreW = (1d * publicScoreW + 1d * criticsScoreW) / 2;
-				System.out.println("");
-				System.out.println(crawler.movie + " (" + crawler.year + ") ");
-				System.out.println(crawler.directorParser.getDirector());
-				System.out.println(  "Public:    " + publicScore  + ", " + publicCount  + " votes" );
-				System.out.println(  "Public(W) :" + publicScoreW);
-				System.out.println(  "Critics:   " + criticsScore + ", " + criticsCount + " reviews" );
-				System.out.println(  "Critics(W):" + criticsScoreW);
-				System.out.println(  "Final:     " + finalScore );
-				System.out.println(  "Final(W):  " + finalScoreW);
-				System.out.println(  "Budget:    " + crawler.boxOfficeParser.getBudget() );
-				System.out.println(  "BoxOffice: " + crawler.boxOfficeParser.getBoxOffice() );
-				System.out.println(  "R.O.I.:    " + roi);
-				System.out.println();
-				
+				Log.log(salida, "\n");
+				Log.log(salida, crawler.movie + " (" + crawler.year + ") \n");
+				Log.log(salida, crawler.directorParser.getDirector() + "\n");
+				Log.log(salida, "  Public:    " + publicScore  + ", " + publicCount  + " votes\n" );
+				Log.log(salida, "  Public(W) :" + publicScoreW + "\n");
+				Log.log(salida, "  Critics:   " + criticsScore + ", " + criticsCount + " reviews\n" );
+				Log.log(salida, "  Critics(W):" + criticsScoreW + "\n");
+				Log.log(salida, "  Final:     " + finalScore + "\n" );
+				Log.log(salida, "  Final(W):  " + finalScoreW + "\n");
+				Log.log(salida, "  Budget:    " + crawler.boxOfficeParser.getBudget() + "\n");
+				Log.log(salida, "  BoxOffice: " + crawler.boxOfficeParser.getBoxOffice() + "\n");
+				Log.log(salida, "  R.O.I.:    " + roi + "\n");
+				Log.log(salida, "\n");
 				
 				// Guardarlo en la estructura
 				movie.put("fetched", true);
@@ -171,17 +165,26 @@ public class WowMovieSetCrawler {
 				movie.put("finalScoreW", finalScoreW);
 				
 				// Descansar un ratito para evitar google sorry 
-				System.out.print("Crawling en ");
+				Log.log(salida, "Crawling en ");
 				for (int w=MOVIE_WAIT_SECS; w>=0; w--) {
-					System.out.print(w + " ");
+					Log.log(salida, w + " ");
 					Thread.sleep(1000);
 				}
-				System.out.println(  "\n--------------------------------------------------------------------------------------------------------\n");
+				Log.log(salida, "\n--------------------------------------------------------------------------------------------------------\n");
 				
 				
 			}
-			
+					
 			// Totales de todo el movieSet
+			long totalVotes = 0, totalReviews = 0;
+			long totalBudget = 0, totalBoxOffice = 0;
+			for (int i=0; i<ja.size(); i++){
+				Map movie = (Map)ja.get(i);
+				totalVotes = totalVotes + (movie.get("publicCount")!=null?(Long)movie.get("publicCount"):0);
+				totalReviews = totalReviews + (movie.get("criticsCount")!=null?(Long)movie.get("criticsCount"):0);
+				totalBudget = totalBudget + (movie.get("budget")!=null?(Long)movie.get("budget"):0);
+				totalBoxOffice = totalBoxOffice + (movie.get("boxOffice")!=null?(Long)movie.get("boxOffice"):0);
+			}
 			jo.put("totalVotes", totalVotes);
 			jo.put("totalReviews", totalReviews);
 			jo.put("totalBudget", totalBudget);
@@ -192,10 +195,15 @@ public class WowMovieSetCrawler {
 	        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	        JsonElement jsonElement =  new JsonParser().parse(jo.toString());
 
-			// Escribir a archivo 
+			// Escribir a archivo la informacion resultante 
 	        PrintWriter pw = new PrintWriter(url(path, file.replace(".json", "")+"_data.json")); 
 	        pw.write(gson.toJson(jsonElement)); 
-	          
+	        pw.flush(); 
+	        pw.close(); 
+	               
+			// Escribir a archivo la salida 
+	        pw = new PrintWriter(url(path, "crawled.txt"));
+	        pw.write(salida.toString());
 	        pw.flush(); 
 	        pw.close(); 
 			
@@ -236,6 +244,6 @@ public class WowMovieSetCrawler {
 		}
 		return totalScore / totalCount; 
 	}
-	
-	
+
+
 }
