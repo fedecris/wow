@@ -63,35 +63,34 @@ public class WikiParser extends WebParser implements BoxOfficeParser {
 	
 	protected long node2long(Node node) {
 		try {
+			long scale = 1L;
 			String content = node.toString().toLowerCase();
 			content = content.substring(content.indexOf("$")+1);
 			content = content.substring(0, content.indexOf("<"));
 			content = content.replace("&nbsp;", "").trim();
+			content = content.replace("–", "-"); // OJO no es el signo menos, es otro caracter similar el que utilizan, lo reemplazo por el - tradicional
+			content = content.replace(",", ""); // separadores de miles no me interesan
 			
-			// Contiene million el valor?
-			if (!content.contains("million")) {
-				Double d = new Double(content);
-				return d.longValue();
-			}
+			// Si contiene million, cambiar la escala y eliminar del contenido (sea que escribieron millions o million)
+			if (content.contains("million")) {
+				scale = 1000000L;
+				int pos = content.indexOf("million");
+				content = content.substring(0, pos).trim();
+			} 
 			
-			// Contiene million?
-			content = content.substring(0, content.indexOf("million")-1).trim();
-			// A veces lo indican con un rango por ejemplo 250-300 million
-			String c = "–"; // OJO no es el signo menos, es otro caracter similar el que utilizan
+			// Definieron un rango? Promediar
+			String c = "-"; 
 			if (content.contains(c)) {
+				// quitar cualquier otro signo peso si es que existe, por ejemplo $100,000-$150,000 (aunque generalmente lo indican como $100.000-150.000
+				content = content.replace("$", "");
 				// Calcular el promedio
 				Double a = new Double(content.split(c)[0]);
 				Double b = new Double(content.split(c)[1]);
 				content = new Double((a+b)/2).toString();
 			}
-			c = "-"; // Por si utilizan el - tradicional
-			if (content.contains(c)) {
-				// Calcular el promedio
-				Double a = new Double(content.split(c)[0]);
-				Double b = new Double(content.split(c)[1]);
-				content = new Double((a+b)/2).toString();
-			}
-			Double d = new Double(content) * 1000000;
+			
+			// Retornar el valor considerando la escala
+			Double d = new Double(content) * scale;
 			return d.longValue();
 		} catch (Exception e) {
 			return -1;

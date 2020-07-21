@@ -36,7 +36,7 @@ public class MovieCrawler {
 	public void fetch(int delaySecs) {
 		
 		log("%s", "");
-		log("%s", "Feching info for " + movie);
+		log("%s", "Feching info for " + movie + "(" + year + ")");
 		
 		SitesManager cs = new SitesManager();
 		cs.getLinksForMovie(movie + " " + year, delaySecs);

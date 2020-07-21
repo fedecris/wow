@@ -69,7 +69,6 @@ public class WowMovieSetCrawler {
 				// Ya fue buscada la informacion?
 				Map movie = (Map)ja.get(i);
 				String title = (String)movie.get("title");
-				String search = (String)movie.get("search");
 				int year = ((Long)movie.get("year")).intValue();
 				boolean fetched = (movie.get("fetched") !=null && (Boolean)movie.get("fetched"));
 				if (fetched) {
@@ -78,7 +77,7 @@ public class WowMovieSetCrawler {
 				}
 				
 				// Crear el crawler y recuperar la info
-				MovieCrawler crawler = new MovieCrawler(search, year, salida);			
+				MovieCrawler crawler = new MovieCrawler(title, year, salida);			
 				crawler.fetch(new Double(MIN_GS_WAIT_SECS + RND_GS_WAIT_SECS * Math.random()).intValue());
 				
 				// Director/es
