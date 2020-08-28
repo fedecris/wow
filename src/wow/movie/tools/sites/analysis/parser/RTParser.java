@@ -41,7 +41,7 @@ public class RTParser extends WebParser implements PublicParser, CriticsParser {
 				continue;
 			}
 			if (!element.childNodes().get(0).toString().contains(key))
-					return; 
+				continue; 
 			String content = element.childNodes().get(0).toString();
 			int start = content.indexOf(key);
 			int end = content.substring(start).indexOf("\n") + start;

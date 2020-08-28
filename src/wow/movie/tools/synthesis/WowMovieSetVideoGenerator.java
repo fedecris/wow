@@ -39,7 +39,7 @@ public class WowMovieSetVideoGenerator {
 	public static String scriptFileName = "";
 
 	/** Duracion de cada clip. DEBE SER MENOR O IGUAL A 59 Segundos */
-	protected static int clipDurationSec = 50;		// La duracion final sera de unos 30. Agrego unos segs para poder recortar partes si es necesario
+	protected static int clipDurationSec = 45;		// La duracion final sera menor. Agrego unos segs para poder recortar partes si es necesario
 	/** Recortar el inicio del video original cierta cantidad de segundos */
 	protected static int trimStartSec = 20;
 	/** Instante de inicio de la Secuencia de titulo (box y texto) */
