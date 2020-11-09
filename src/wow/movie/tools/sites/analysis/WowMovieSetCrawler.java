@@ -41,11 +41,11 @@ import wow.movie.tools.sites.utils.Log;
 public class WowMovieSetCrawler {
 
 	/** Espera entre cada busqueda de google */
-	protected static final int MIN_GS_WAIT_SECS = 5;
+	protected static final int MIN_GS_WAIT_SECS = 20;
 	/** Espera adicional random */
-	protected static final int RND_GS_WAIT_SECS = 5;
+	protected static final int RND_GS_WAIT_SECS = 15;
 	/** Espera entre cada pelicula */
-	protected static final int MOVIE_WAIT_SECS = 5;
+	protected static final int MOVIE_WAIT_SECS = 120;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args) {
@@ -201,7 +201,7 @@ public class WowMovieSetCrawler {
 	        pw.close(); 
 	               
 			// Escribir a archivo la salida 
-	        pw = new PrintWriter(url(path, "crawled.txt"));
+	        pw = new PrintWriter(url(path, file.replace(".json", "")+"_data.txt"));
 	        pw.write(salida.toString());
 	        pw.flush(); 
 	        pw.close(); 

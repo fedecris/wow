@@ -39,7 +39,7 @@ public class WowMovieSetVideoGenerator {
 	public static String scriptFileName = "";
 
 	/** Duracion de cada clip. DEBE SER MENOR O IGUAL A 59 Segundos */
-	protected static int clipDurationSec = 45;		// La duracion final sera menor. Agrego unos segs para poder recortar partes si es necesario
+	protected static int clipDurationSec = 40;		// La duracion final sera menor. Agrego unos segs para poder recortar partes si es necesario
 	/** Recortar el inicio del video original cierta cantidad de segundos */
 	protected static int trimStartSec = 20;
 	/** Instante de inicio de la Secuencia de titulo (box y texto) */
@@ -50,6 +50,12 @@ public class WowMovieSetVideoGenerator {
 	protected static int infoIncrementSec = 2;
 	/** Tiempo a ocultar el texto/caja antes de que termine el video */
 	protected static int hideBeforeEndSec = 1;
+	/** Duracion del fadeout */
+	protected static int fadeDuration = 1;
+	/** Fix trailer clipNo? Unico de tipo: trailer_00_1_0 */
+	protected static boolean fixedTrailerClipNo = false;
+	/** El video resultante esta compuesto por imagenes o por videos? */
+	protected static boolean imageSlideVideo = false;
 	
 	
 	/** Letra de la info */
@@ -64,6 +70,16 @@ public class WowMovieSetVideoGenerator {
 	protected static String roiColor = "#6dd47e";
 	
 	public static void main(String[] args) {
+		
+		// Descomentar para express. Comentar para insight
+		clipDurationSec = 15;
+		titleAppearSec = 1;
+		infoAppearSec = 4;
+		infoIncrementSec = 1;
+		fadeDuration = 0;
+		fixedTrailerClipNo = true;
+		imageSlideVideo = true;
+		// FIN Descomentar para express. Comentar para insight
 		
 		// Cadena con el contenido del script .sh
 		StringBuffer scriptContent = new StringBuffer("");
@@ -107,8 +123,17 @@ public class WowMovieSetVideoGenerator {
 				
 				// Video de entrada y generalidades
 				scriptContent.append("# === CLIP NUMERO " + clipNo + " === \n");
+				
+				// Solo para Insight Express
+				if (imageSlideVideo) {
+						// Usar el video base y superponerle el slide de la imagen
+						scriptContent.append("ffmpeg -y -f lavfi -i \"movie=" + clipName + "[background]; movie=image_" + clipNo + ".jpg[overlayT]; [overlayT]scale=-1:900[overlay]; [background][overlay]overlay='W+500-n*12:(H-h)/2'\" tmp.mp4 \n");
+						// La siguiente parte del script deberá leer tempo.mp4 en lugar de trailer_xx
+						clipName = "tmp.mp4";				
+				}				
+				
 				scriptContent.append("ffmpeg -y -i " + clipName + " -an -vf \" ");
-				scriptContent.append("fade=type=out:duration=1:start_time=" + (clipDurationSec+trimStartSec-1) + ", ");
+				scriptContent.append("fade=type=out:duration="+fadeDuration+":start_time=" + (clipDurationSec+trimStartSec-fadeDuration) + ", ");
 				scriptContent.append("scale=iw*" + getScaleRatio(clipNo) + ":ih*" + getScaleRatio(clipNo) + ":force_original_aspect_ratio=increase, crop=1920:1080, "); 
 				
 				// Box rojo del titulo 
@@ -435,9 +460,8 @@ public class WowMovieSetVideoGenerator {
 	}
 	
 	public static String getClipName(String clipNo) {
-		return "trailer_" + clipNo + "_" + getScaleRatio(clipNo) + "_" + getTrimStartSecs(clipNo) + ".mp4";
+		return "trailer_" + getTrailerClipNo(clipNo) + "_" + getScaleRatio(clipNo) + "_" + getTrimStartSecs(clipNo) + ".mp4";
 	}
-	
 	
 	/** Considera el formato: trailer_01_1.35_20.mp4 */
 	public static String getScaleRatio(String clipNo) {
@@ -446,7 +470,7 @@ public class WowMovieSetVideoGenerator {
 
         // For each pathname in the pathnames array
         for (String name : pathnames) {
-        	if (name.startsWith("trailer_" + clipNo + "_") && name.endsWith(".mp4") ) {
+        	if (name.startsWith("trailer_" + getTrailerClipNo(clipNo) + "_") && name.endsWith(".mp4") ) {
         		String[] parts = name.split("_");
         		return parts[2];
         	}
@@ -462,7 +486,7 @@ public class WowMovieSetVideoGenerator {
 
         // For each pathname in the pathnames array
         for (String name : pathnames) {
-        	if (name.startsWith("trailer_" + clipNo + "_") && name.endsWith(".mp4") ) {
+        	if (name.startsWith("trailer_" + getTrailerClipNo(clipNo) + "_") && name.endsWith(".mp4") ) {
         		String[] parts = name.split("_");
         		return parts[3].replace(".mp4", "");
         	}
@@ -472,6 +496,11 @@ public class WowMovieSetVideoGenerator {
 		
 	}
 	
+	/** Retorna el numero de trailer (clipNo) si es que fixedTrailerClipNo es false, sino retorna siempre 00 */
+	public static String getTrailerClipNo(String clipNo) {
+		if (fixedTrailerClipNo) return "00";
+		return clipNo;
+	}
 	
 	public static String getTitleRecortado(Map movie, int maxLen) {
 		String title = (String)movie.get("title");
